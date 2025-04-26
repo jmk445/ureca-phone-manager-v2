@@ -1,10 +1,9 @@
 package com.mycom.myapp.user.service;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.stereotype.Service;
 
+import com.mycom.myapp.user.dto.UserDto;
+import com.mycom.myapp.user.dto.UserResultDto;
 import com.mycom.myapp.user.entity.User;
 import com.mycom.myapp.user.repository.UserRepository;
 
@@ -17,13 +16,19 @@ public class UserServiceImpl implements UserService{
 	}
 	
 	@Override
-	public User insertUser(User user) {
-		Map<String,String> map = new HashMap<>();
+	public UserResultDto register(User user) {
+		UserResultDto userResultDto = new UserResultDto();		
+		User newUser = this.userRepository.save(user);
 		
-		User userResult = this.userRepository.save(user);
+		UserDto userDto = UserDto.builder()
+				.userId(newUser.getUserId())
+				.userEmail(newUser.getUserEmail())
+				.userName(newUser.getUserName())
+				.userProfileImage(newUser.getUserProfileImage())
+				.build();
 		
-		
-		return userResult;
+		userResultDto.setUserDto(userDto);
+		return userResultDto;
 	}
 
 }

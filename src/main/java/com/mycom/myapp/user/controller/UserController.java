@@ -5,11 +5,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.mycom.myapp.user.dto.UserResultDto;
 import com.mycom.myapp.user.entity.User;
 import com.mycom.myapp.user.service.UserService;
 
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserController {
 	
 	private final UserService userService;
@@ -19,7 +20,7 @@ public class UserController {
 	
 	@PostMapping("/register")
 	@ResponseBody
-	public User register(User user){
-		return this.userService.insertUser(user);		
+	public UserResultDto register(User user){
+		return this.userService.register(user);		
 	}
 }
