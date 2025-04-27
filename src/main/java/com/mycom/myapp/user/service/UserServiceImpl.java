@@ -18,16 +18,23 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public UserResultDto register(User user) {
 		UserResultDto userResultDto = new UserResultDto();		
-		User newUser = this.userRepository.save(user);
 		
-		UserDto userDto = UserDto.builder()
-				.userId(newUser.getUserId())
-				.userEmail(newUser.getUserEmail())
-				.userName(newUser.getUserName())
-				.userProfileImage(newUser.getUserProfileImage())
-				.build();
+		try {
+			User newUser = this.userRepository.save(user);
+			
+			UserDto userDto = UserDto.builder()
+					.userId(newUser.getUserId())
+					.userEmail(newUser.getUserEmail())
+					.userName(newUser.getUserName())
+					.userProfileImage(newUser.getUserProfileImage())
+					.build();
+			userResultDto.setUserDto(userDto);
+			userResultDto.setResult("success");
+		}catch(Exception e) {
+			userResultDto.setResult("fail");
+		}
+				
 		
-		userResultDto.setUserDto(userDto);
 		return userResultDto;
 	}
 
