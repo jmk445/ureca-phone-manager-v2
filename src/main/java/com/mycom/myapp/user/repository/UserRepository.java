@@ -8,6 +8,6 @@ import com.mycom.myapp.user.entity.User;
 
 public interface UserRepository extends JpaRepository<User,Integer>{
 	//crud 생성 완료
-	
+
 	Optional<User> findByUserEmail(String email);
 }

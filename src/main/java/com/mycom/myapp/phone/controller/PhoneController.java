@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mycom.myapp.phone.dto.PhoneResultDto;
@@ -44,7 +45,10 @@ public class PhoneController {
 		
 		return phoneResultDto;			
 	}
-	
+//	@GetMapping("/detail/namelike")
+//	public PhoneResultDto detailPhoneByName(@RequestParam("name") String name){
+//		
+//	}
 	@PostMapping("/insert")	
 	public PhoneResultDto insertPhone(Phone phone) {
 

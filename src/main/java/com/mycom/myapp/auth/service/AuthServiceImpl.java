@@ -32,6 +32,7 @@ public class AuthServiceImpl implements AuthService{
 						.userName(user.getUserName())																	
 						.build();				
 				userResultDto.setUserDto(userDto);
+				
 				userResultDto.setResult("success");
 			}else {
 				userResultDto.setResult("fail");

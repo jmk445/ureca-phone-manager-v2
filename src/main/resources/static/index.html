@@ -43,10 +43,10 @@
   <div class="row justify-content-center g-4">
     <div class="col-md-4">
       <div class="card shadow">
-        <img src="./cellphone2.png" class="card-img-top" alt="휴대폰 이미지">
+        <img src="./assets/img/cellphone2.png" class="card-img-top" alt="휴대폰 이미지">
         <div class="card-body">
           <h5 class="card-title">휴대폰 재고 관리</h5>
-          <p class="card-text">휴대폰 재고를 효율적으로 관리할 수 있는 시스템입니다.</p>
+          <p class="card-text">재고 보충 필요 휴대폰 : </p>
           <a href="/phones.html" class="btn btn-primary w-100">재고 관리 이동</a>
         </div>
       </div>
@@ -54,10 +54,10 @@
 
     <div class="col-md-4">
       <div class="card shadow">
-        <img src="./user2.png" class="card-img-top" alt="사용자 관리 이미지">
+        <img src="./assets/img/user2.png" class="card-img-top" alt="사용자 관리 이미지">
         <div class="card-body">
           <h5 class="card-title">사용자 관리</h5>
-          <p class="card-text">회원 정보를 효율적으로 관리할 수 있습니다.</p>
+          <p class="card-text">등급 업그레이드 필요 사용자 :</p>
           <a href="/users.html" class="btn btn-secondary w-100">사용자 관리 이동</a>
         </div>
       </div>
@@ -89,12 +89,26 @@ window.onload = function() {
     mypageButton.style.display = 'none';
   }
 
-  logoutButton.onclick = function() {
-    sessionStorage.removeItem("name");
-    sessionStorage.removeItem("email");
-    window.location.href = "/index.html";
-  }
+  logoutButton.onclick = logout;
 }
+
+async function logout(){
+    let url = '/users/logout';
+    try{
+        let response = await fetch(url);
+        let data = await response.json();
+        if(data.result == 'success'){
+        	sessionStorage.removeItem("name");
+            sessionStorage.removeItem("email");
+            window.location.href = "/index.html";
+        }else{
+        	alert("로그아웃 실패");
+        }
+    }catch(error){
+        console.error(error);
+        alert('로그아웃 중 오류 발생!');
+    }           
+}   
 </script>
 
 </body>
