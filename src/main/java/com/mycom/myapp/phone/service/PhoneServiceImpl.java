@@ -19,23 +19,33 @@ public class PhoneServiceImpl implements PhoneService{
 	private final PhoneRepository phoneRepository;
 	
 	@Override
-	public PhoneResultDto insertPhone(Phone phone) {
+	public PhoneResultDto insertPhone(PhoneDto phoneDto) {
 		PhoneResultDto phoneResultDto = new PhoneResultDto();
+		Phone phone = Phone.builder()
+				.phoneName(phoneDto.getName())
+				.phonePrice(phoneDto.getPrice())
+				.phoneMaker(phoneDto.getMaker())
+				.phoneRemain(phoneDto.getRemain())
+				.build();
+		
 		Optional<Phone> phoneExisting = phoneRepository.findByPhoneName(phone.getPhoneName());
-		if(!phoneExisting.isPresent()) {
-			Phone phoneFromRepo = phoneRepository.save(phone);
-			PhoneDto phoneDto = PhoneDto.builder()
-					.id(phoneFromRepo.getPhoneId())
-					.name(phoneFromRepo.getPhoneName())
-					.maker(phoneFromRepo.getPhoneMaker())
-					.remain(phoneFromRepo.getPhoneRemain())
-					.price(phoneFromRepo.getPhonePrice())
-					.build();
+		
+		if(!phoneExisting.isPresent()) {			
+//			Phone phoneFromRepo = phoneRepository.save(phone);
+//			PhoneDto phoneDto = PhoneDto.builder()
+//					.id(phoneFromRepo.getPhoneId())
+//					.name(phoneFromRepo.getPhoneName())
+//					.maker(phoneFromRepo.getPhoneMaker())
+//					.remain(phoneFromRepo.getPhoneRemain())
+//					.price(phoneFromRepo.getPhonePrice())
+//					.build();
+//			
+//			phoneResultDto.setPhoneDto(phoneDto);
 			
-			phoneResultDto.setPhoneDto(phoneDto);
+			phoneRepository.save(phone);
 			phoneResultDto.setResult("success");
-		}else {
-			phoneResultDto.setResult("fail:already exisiting");
+		}else {			
+			phoneResultDto.setResult("fail");
 		}
 		
 		return phoneResultDto;		
@@ -45,19 +55,28 @@ public class PhoneServiceImpl implements PhoneService{
     	PhoneResultDto phoneResultDto = new PhoneResultDto();
     	Optional<Phone> phoneFromRepo = phoneRepository.findById(id);
     	
-    	if(phoneFromRepo.isPresent()) {
-    		Phone phone = phoneFromRepo.get();
-    		PhoneDto phoneDto = PhoneDto.builder()
-    				.id(phone.getPhoneId())
-    				.name(phone.getPhoneName())
-    				.maker(phone.getPhoneMaker())
-    				.price(phone.getPhonePrice())
-    				.remain(phone.getPhoneRemain())
-    				.build();
-    		    		
-    		phoneResultDto.setPhoneDto(phoneDto);    		
+    	try {
+    		if(phoneFromRepo.isPresent()) {
+        		Phone phone = phoneFromRepo.get();
+        		PhoneDto phoneDto = PhoneDto.builder()
+        				.id(phone.getPhoneId())
+        				.name(phone.getPhoneName())
+        				.maker(phone.getPhoneMaker())
+        				.price(phone.getPhonePrice())
+        				.remain(phone.getPhoneRemain())
+        				.build();
+        		    		
+        		phoneResultDto.setPhoneDto(phoneDto);    
+        		phoneResultDto.setResult("success");
+        	}else {
+        		phoneResultDto.setResult("fail");
+        	}
+    		
+    	}catch(Exception e) {
+    		e.printStackTrace();
+			phoneResultDto.setResult("fail");
     	}
-		
+    	
 		return phoneResultDto;		    	
     }
 
@@ -87,20 +106,37 @@ public class PhoneServiceImpl implements PhoneService{
     }
 
 
-    public PhoneResultDto updatePhone(Phone phone) {
-    	Optional<Phone> existingPhone = phoneRepository.findById(phone.getPhoneId());    	
+    public PhoneResultDto updatePhone(PhoneDto phoneDto) {
+    	Optional<Phone> existingPhone = phoneRepository.findById(phoneDto.getId());    	
     	PhoneResultDto phoneResultDto = new PhoneResultDto();
+    	
+    	Phone phone = Phone.builder()
+    			.phoneId(phoneDto.getId())
+				.phoneName(phoneDto.getName())
+				.phonePrice(phoneDto.getPrice())
+				.phoneMaker(phoneDto.getMaker())
+				.phoneRemain(phoneDto.getRemain())
+				.build();
+    	
 		if(existingPhone.isPresent()) {
-			Optional<Phone> resultPhone = Optional.of(phoneRepository.save(phone));
+			try {
+				Optional<Phone> resultPhone = Optional.of(phoneRepository.save(phone));
+				phoneResultDto.setResult("success");
+			}catch(Exception e) {
+				e.printStackTrace();
+				phoneResultDto.setResult("fail");
+			}
 			
-			PhoneDto phoneDto = PhoneDto.builder()
-    				.id(resultPhone.get().getPhoneId())
-    				.name(resultPhone.get().getPhoneName())
-    				.maker(resultPhone.get().getPhoneMaker())
-    				.price(resultPhone.get().getPhonePrice())
-    				.remain(phone.getPhoneRemain())
-    				.build();
-			phoneResultDto.setPhoneDto(phoneDto);
+			
+			
+//			PhoneDto phoneDto = PhoneDto.builder()
+//    				.id(resultPhone.get().getPhoneId())
+//    				.name(resultPhone.get().getPhoneName())
+//    				.maker(resultPhone.get().getPhoneMaker())
+//    				.price(resultPhone.get().getPhonePrice())
+//    				.remain(phone.getPhoneRemain())
+//    				.build();
+//			phoneResultDto.setPhoneDto(phoneDto);			
 		}
 		
 		return phoneResultDto;

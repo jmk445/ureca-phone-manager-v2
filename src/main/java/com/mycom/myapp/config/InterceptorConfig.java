@@ -26,9 +26,9 @@ public class InterceptorConfig implements WebMvcConfigurer {
 	                "/js/**", 
 	                "/images/**", 
 	                "/favicon.ico",
-	                "/static/**",
-	                "/webjars/**",	                
-	                "/assets/**"
+	                "/static/**",	                	               
+	                "/assets/**",
+	                "/swagger-ui.html"
 	            );
 	}
 
