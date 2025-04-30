@@ -12,12 +12,18 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Data
 @Entity
 @Table(name="users")
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class User {	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY) 
@@ -27,8 +33,8 @@ public class User {
 	private String userEmail;
 	private String userProfileImage;
 	private Date userRegisterDate;
-	
+	private Boolean modified;
 	@OneToMany(fetch=FetchType.EAGER)
 	@ToString.Exclude
-	private List<UserRole> userRoles = new ArrayList<>();
+	private List<UserRole> userRoles;
 }

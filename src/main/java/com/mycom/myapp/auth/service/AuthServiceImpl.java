@@ -32,11 +32,13 @@ public class AuthServiceImpl implements AuthService{
 						.userName(user.getUserName())																	
 						.build();				
 				userResultDto.setUserDto(userDto);
-				
+				System.out.println("in login : "+userResultDto);
 				userResultDto.setResult("success");
 			}else {
-				userResultDto.setResult("fail");
+				userResultDto.setResult("passWordIncorrect");
 			}
+		}else {
+			userResultDto.setResult("idNotFound");
 		}
 		
 		return userResultDto;

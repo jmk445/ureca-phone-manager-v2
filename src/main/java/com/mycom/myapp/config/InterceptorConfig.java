@@ -19,7 +19,8 @@ public class InterceptorConfig implements WebMvcConfigurer {
 	            	"/",
 	                "/login/**", 
 	                "/index.html", 
-	                "/users/**", 
+	                "/api/users/**",
+	                "/users/login",
 	                "/login.html", 
 	                "/register.html",	               	               
 	                "/css/**", 
@@ -28,6 +29,8 @@ public class InterceptorConfig implements WebMvcConfigurer {
 	                "/favicon.ico",
 	                "/static/**",	                	               
 	                "/assets/**",
+	                "/swagger-ui/index.html",
+	                "/swagger-ui/**",
 	                "/swagger-ui.html"
 	            );
 	}

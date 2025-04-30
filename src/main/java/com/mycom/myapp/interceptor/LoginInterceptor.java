@@ -18,12 +18,15 @@ public class LoginInterceptor implements HandlerInterceptor{
 			throws Exception {
 		System.out.println("LoginInterceptor >>>>>" + request.getRequestURI());
 		HttpSession session = request.getSession();
-		UserResultDto userResultDto = (UserResultDto)session.getAttribute("userResultDto");		
+		UserResultDto userResultDto = (UserResultDto)session.getAttribute("userResultDto");	
+		System.out.println("in interceptor" + userResultDto);
 		if (userResultDto == null) {
+			System.out.println("in null");
 		    response.sendRedirect("/login.html"); // 로그인 페이지 URL로 리다이렉트
 		    return false;
 		}
-
+//false true 에서 true false로 바꾸니까 됨.
+		
 		return true;		
 	}
 	

@@ -27,30 +27,29 @@ public class PhoneController {
 			
 	@GetMapping("/phones")
 	@Operation(summary="휴대폰 목록 조회",description="전체 휴대폰 목록을 조회합니다.")
-	public ResponseEntity<PhoneResultDto> listPhone() {
+	public PhoneResultDto listPhone() {
 		PhoneResultDto phoneResultDto = phoneService.listPhone();		
-		return ResponseEntity
-				.ok()
-				.body(phoneResultDto);
 
-//		if(phoneResultDto.getPhoneList() != null) {
-//			phoneResultDto.setResult("success");			
-//		}else {
-//			phoneResultDto.setResult("fail");
-//		}
-//		return phoneResultDto;		
+		if(phoneResultDto.getPhoneList() != null) {
+			phoneResultDto.setResult("success");			
+		}else {
+			phoneResultDto.setResult("fail");
+		}
+		return phoneResultDto;			
+	
 	}
 	
 	@GetMapping("/phones/{id}")
 	@Operation(summary="휴대폰 상세 조회",description="개별 휴대폰을 조회합니다.")
 	public ResponseEntity<PhoneResultDto> detailPhone(@PathVariable("id") Integer id) {
 		PhoneResultDto phoneResultDto = phoneService.detailPhone(id);	
-
+		//기존 코드
 //		if(phoneResultDto.getPhoneDto() != null) {
 //			phoneResultDto.setResult("success");			
 //		}else {
 //			phoneResultDto.setResult("fail");
 //		}
+//		return phoneResultDto;		
 		
 		//2-2번사용, 즉, resultDto를 Client에게 전달하지만 사용하지 않고, 대신 controller에서 service의 작업 결과를 ResultDto를 통해서 처리
 		switch(phoneResultDto.getResult()) {
@@ -60,12 +59,10 @@ public class PhoneController {
 			default : return ResponseEntity.internalServerError().build();
 		}
 		
-//		return phoneResultDto;			
+	
 	}
 	
-//	@GetMapping("/detail/namelike")
-//	public PhoneResultDto detailPhoneByName(@RequestParam("name") String name){
-//	}
+
 	@PostMapping("/phones")	
 	@Operation(summary="휴대폰 등록",description="신규 휴대폰을 등록합니다.")
 	public PhoneResultDto insertPhone(PhoneDto phoneDto) {
