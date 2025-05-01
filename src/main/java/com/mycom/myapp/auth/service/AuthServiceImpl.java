@@ -10,9 +10,11 @@ import com.mycom.myapp.user.entity.User;
 import com.mycom.myapp.user.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class AuthServiceImpl implements AuthService{
 	
 	private final UserRepository userRepository;
@@ -25,13 +27,15 @@ public class AuthServiceImpl implements AuthService{
 		if(optionalUser.isPresent()) {
 			User user = optionalUser.get();
 			if(user.getUserPassword().equals(password)) {
-				//User -> UserDto (user 정보로 userDto를 만들기)
+				//User -> UserDto (user 정보로 userDto를 만들기), password는 넣어주지 않는다.
 				UserDto userDto = UserDto.builder()
 						.userId(user.getUserId())
-						.userEmail(user.getUserEmail())
+						.userEmail(user.getUserEmail())					
 						.userName(user.getUserName())																	
 						.build();				
 				userResultDto.setUserDto(userDto);
+				log.debug(user.getUserPassword());
+				log.debug(password);
 				System.out.println("in login : "+userResultDto);
 				userResultDto.setResult("success");
 			}else {
