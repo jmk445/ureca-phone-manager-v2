@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
@@ -25,7 +26,7 @@ public class UserServiceImpl implements UserService{
 
 	private final UserRepository userRepository;
 	private final UserRoleRepository userRoleRepository;
-	
+	private PasswordEncoder passwordEncoder;
 	@Override
 	@Transactional
 	public UserResultDto register(User user) {
@@ -43,7 +44,13 @@ public class UserServiceImpl implements UserService{
 			
 			List<UserRole> userRoles = List.of(userRole);
 			user.setUserRoles(userRoles);						
-			User newUser = this.userRepository.save(user);
+			
+			
+			User newUser = this.userRepository.save(User.builder()
+						.userEmail(user.getUserEmail())
+						.userPassword(passwordEncoder.encode(user.getUserPassword()))
+						.build()
+					);
 			userRepository.flush();
 			System.out.println(newUser);
 			UserDto userDto = UserDto.builder()
